@@ -16,6 +16,7 @@ const Home = () => {
                 setData(data)
                 setIsLoading(false)
             })
+        window.scrollTo(0, 0);
     }, [])
     return (
         <>
