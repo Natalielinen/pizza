@@ -1,14 +1,9 @@
-import React, {useState} from 'react';
+import React from 'react';
 
-const Categories = () => {
-
-    const [activeCategoryIndex, setActiveCategoryIndex] = useState(0);
+const Categories = ({activeCategoryIndex, onCategoryChanged}) => {
 
     const categories = ['Все', 'Мясные', 'Вегетарианская', 'Гриль', 'Острые', 'Закрытые'];
 
-    const onCategoryChanged = (index) => {
-            setActiveCategoryIndex(index);
-    }
 
     return (
         <div className="categories">

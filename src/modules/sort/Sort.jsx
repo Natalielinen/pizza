@@ -1,16 +1,8 @@
 import React, {useState} from 'react';
 
-const Sort = () => {
+const Sort = ({activeSortIndex, showSortPopup, setShowSortPopup, onSortItemChange}) => {
     const sortItems = ['популярности', 'цене', 'алфавиту']
 
-    const [showSortPopup, setShowSortPopup] = useState(false)
-    const [activeSortIndex, setActiveSortIndex] = useState(0)
-
-    const onSortItemChange = (index) => {
-        setActiveSortIndex(index)
-        setShowSortPopup(false)
-
-    }
 
     return (
         <div className="sort">
@@ -30,18 +22,18 @@ const Sort = () => {
                 <b>Сортировка по:</b>
                 <span onClick={() => setShowSortPopup(!showSortPopup)}>{sortItems[activeSortIndex]}</span>
             </div>
-            { showSortPopup &&
+            {showSortPopup &&
                 <div className="sort__popup">
-                <ul>
-                    {
-                        sortItems.map((item, index) => <li
-                            key={index}
-                            className={activeSortIndex === index ? 'active' : ''}
-                            onClick={() => onSortItemChange(index)}
-                        >{item}</li>)
-                    }
-                </ul>
-            </div>
+                    <ul>
+                        {
+                            sortItems.map((item, index) => <li
+                                key={index}
+                                className={activeSortIndex === index ? 'active' : ''}
+                                onClick={() => onSortItemChange(index)}
+                            >{item}</li>)
+                        }
+                    </ul>
+                </div>
             }
         </div>
     )
