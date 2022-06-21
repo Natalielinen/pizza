@@ -3,9 +3,12 @@ import React, {useState} from 'react';
 const Sort = ({value, onSortChange}) => {
     const [showSortPopup, setShowSortPopup] = useState(false)
     const sortItems = [
-        {name: 'популярности', sort: 'rating'},
-        {name: 'цене', sort: 'price'},
-        {name: 'алфавиту', sort: 'title'}
+        {name: 'популярности DESC', sort: 'rating'},
+        {name: 'популярности ASC', sort: '-rating'},
+        {name: 'цене DESC', sort: 'price'},
+        {name: 'цене ASC', sort: '-price'},
+        {name: 'алфавиту DESC', sort: 'title'},
+        {name: 'алфавиту ASC', sort: '-title'}
     ]
 
     const onSortItemChange = (index) => {

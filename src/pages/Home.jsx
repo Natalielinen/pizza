@@ -13,7 +13,10 @@ const Home = () => {
 
 
     useEffect(() => {
-        fetch(`https://62a8517e943591102b9ef016.mockapi.io/pizzas?${activeCategoryIndex > 0 ? `category=${activeCategoryIndex}` : ''}&sortBy=${sortType}=desc`)
+
+        const sortBy = sortType.sort.replace('-', '')
+        const sortOrder = sortType.sort.includes('-') ? 'asc' : 'desc'
+        fetch(`https://62a8517e943591102b9ef016.mockapi.io/pizzas?${activeCategoryIndex > 0 ? `category=${activeCategoryIndex}` : ''}&sortBy=${sortBy}&order=${sortOrder}`)
             .then(res => res.json())
             .then(data => {
                 setData(data)
