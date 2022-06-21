@@ -9,47 +9,24 @@ const Home = () => {
     const [data, setData] = useState([])
     const [isLoading, setIsLoading] = useState(true)
     const [activeCategoryIndex, setActiveCategoryIndex] = useState(0);
-    const [activeSortIndex, setActiveSortIndex] = useState(0)
-    const [showSortPopup, setShowSortPopup] = useState(false)
+    const [sortType, setActiveSortType] = useState({name: 'популярности', sort: 'rating'})
 
-    const onSortItemChange = (index) => {
-        setActiveSortIndex(index)
-        setShowSortPopup(false)
-        fetch(`https://62a8517e943591102b9ef016.mockapi.io/pizzas?sort=${index}`)
-            .then(res => res.json())
-            .then(data => {
-                setData(data)
-                setIsLoading(false)
-            })
-
-    }
-
-    const onCategoryChanged = (index) => {
-        setActiveCategoryIndex(index);
-        fetch(`https://62a8517e943591102b9ef016.mockapi.io/pizzas?category=${index}`)
-            .then(res => res.json())
-            .then(data => {
-                setData(data)
-                setIsLoading(false)
-            })
-    }
 
     useEffect(() => {
-        fetch('https://62a8517e943591102b9ef016.mockapi.io/pizzas')
+        fetch(`https://62a8517e943591102b9ef016.mockapi.io/pizzas?${activeCategoryIndex > 0 ? `category=${activeCategoryIndex}` : ''}&sortBy=${sortType}=desc`)
             .then(res => res.json())
             .then(data => {
                 setData(data)
                 setIsLoading(false)
             })
         window.scrollTo(0, 0);
-    }, [])
+    }, [activeCategoryIndex, sortType])
     return (
         <>
             <div className="content__top">
                 <Categories activeCategoryIndex={activeCategoryIndex}
-                            onCategoryChanged={onCategoryChanged}/>
-                <Sort activeSortIndex={activeSortIndex} onSortItemChange={onSortItemChange}
-                      showSortPopup={showSortPopup} setShowSortPopup={setShowSortPopup}/>
+                            onCategoryClick={(i) => setActiveCategoryIndex(i)}/>
+                <Sort value={sortType} onSortChange={(i) => setActiveSortType(i)}/>
             </div>
             <h2 className="content__title">Все пиццы</h2>
             <div className="content__items">
