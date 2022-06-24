@@ -2,16 +2,18 @@ import Categories from '../modules/categories/Categories';
 import Sort from '../modules/sort/Sort';
 import Skeleton from '../modules/pizzaBlock/Skeleton';
 import PizzaBlock from '../modules/pizzaBlock/PizzaBlock';
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useContext} from 'react';
+import {AppContext} from '../App';
 
 
-const Home = ({searchValue}) => {
+const Home = () => {
     const [data, setData] = useState([])
     const [isLoading, setIsLoading] = useState(true)
     const [activeCategoryIndex, setActiveCategoryIndex] = useState(0);
     const [sortType, setActiveSortType] = useState({name: 'популярности', sort: 'rating'})
 
-
+    const {searchValue} = useContext(AppContext)
+    
     useEffect(() => {
 
         const sortBy = sortType.sort.replace('-', '')
