@@ -5,7 +5,7 @@ import PizzaBlock from '../modules/pizzaBlock/PizzaBlock';
 import React, {useEffect, useState} from 'react';
 
 
-const Home = () => {
+const Home = ({searchValue}) => {
     const [data, setData] = useState([])
     const [isLoading, setIsLoading] = useState(true)
     const [activeCategoryIndex, setActiveCategoryIndex] = useState(0);
@@ -24,6 +24,10 @@ const Home = () => {
             })
         window.scrollTo(0, 0);
     }, [activeCategoryIndex, sortType])
+
+    const pizzas = data.filter(obj => obj.title.toLowerCase().includes(searchValue.toLowerCase())).map(obj =>
+        <PizzaBlock {...obj} key={obj.id}/>)
+
     return (
         <>
             <div className="content__top">
@@ -35,7 +39,7 @@ const Home = () => {
             <div className="content__items">
                 {
                     isLoading ? [...new Array(6)].map((_, index) => <Skeleton key={index}/>)
-                        : data.map(obj => <PizzaBlock {...obj} key={obj.id}/>)
+                        : pizzas
                 }
             </div>
         </>

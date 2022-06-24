@@ -1,0 +1,13 @@
+.searchContainer {
+  .input {
+    padding: 5px 10px;
+    border-radius: 15px;
+    border: 1px solid #8d8d8d;
+    outline: none;
+
+    &:hover {
+      border: 1px solid #7b7b7b;
+      background-color: #f6f6f6;
+    }
+  }
+}
