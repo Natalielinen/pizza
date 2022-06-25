@@ -4,16 +4,21 @@ import Skeleton from '../modules/pizzaBlock/Skeleton';
 import PizzaBlock from '../modules/pizzaBlock/PizzaBlock';
 import React, {useEffect, useState, useContext} from 'react';
 import {AppContext} from '../App';
+import {useDispatch, useSelector} from 'react-redux';
+import {setActiveCategoryIndex, setActiveSortType} from '../redux/slices/filterSlice';
 
 
 const Home = () => {
     const [data, setData] = useState([])
     const [isLoading, setIsLoading] = useState(true)
-    const [activeCategoryIndex, setActiveCategoryIndex] = useState(0);
-    const [sortType, setActiveSortType] = useState({name: 'популярности', sort: 'rating'})
+    //const [sortType, setActiveSortType] = useState({name: 'популярности', sort: 'rating'})
+
+    const activeCategoryIndex = useSelector((state) => state.filter.activeCategoryIndex)
+    const sortType = useSelector((state) => state.filter.sortType);
+    const dispatch = useDispatch();
 
     const {searchValue} = useContext(AppContext)
-    
+
     useEffect(() => {
 
         const sortBy = sortType.sort.replace('-', '')
@@ -34,7 +39,7 @@ const Home = () => {
         <>
             <div className="content__top">
                 <Categories activeCategoryIndex={activeCategoryIndex}
-                            onCategoryClick={(i) => setActiveCategoryIndex(i)}/>
+                            onCategoryClick={(i) => dispatch(setActiveCategoryIndex(i))}/>
                 <Sort value={sortType} onSortChange={(i) => setActiveSortType(i)}/>
             </div>
             <h2 className="content__title">Все пиццы</h2>

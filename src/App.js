@@ -3,6 +3,7 @@ import {
     Routes,
     Route,
 } from 'react-router-dom';
+
 import './scss/app.scss';
 import Header from './modules/header/Header';
 import Home from './pages/Home';
