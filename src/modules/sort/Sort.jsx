@@ -1,18 +1,23 @@
 import React, {useState} from 'react';
+import {useDispatch, useSelector} from 'react-redux';
+import {setActiveSortType} from '../../redux/slices/filterSlice';
 
-const Sort = ({value, onSortChange}) => {
+const Sort = () => {
+    const sort = useSelector(state => state.filter.sort)
+    const dispatch = useDispatch();
+
     const [showSortPopup, setShowSortPopup] = useState(false)
     const sortItems = [
-        {name: 'популярности DESC', sort: 'rating'},
-        {name: 'популярности ASC', sort: '-rating'},
-        {name: 'цене DESC', sort: 'price'},
-        {name: 'цене ASC', sort: '-price'},
-        {name: 'алфавиту DESC', sort: 'title'},
-        {name: 'алфавиту ASC', sort: '-title'}
+        {name: 'популярности DESC', property: 'rating'},
+        {name: 'популярности ASC', property: '-rating'},
+        {name: 'цене DESC', property: 'price'},
+        {name: 'цене ASC', property: '-price'},
+        {name: 'алфавиту DESC', property: 'title'},
+        {name: 'алфавиту ASC', property: '-title'}
     ]
 
-    const onSortItemChange = (index) => {
-        onSortChange(index)
+    const onSortItemChange = (obj) => {
+        dispatch(setActiveSortType(obj))
         setShowSortPopup(false)
     }
 
@@ -32,7 +37,7 @@ const Sort = ({value, onSortChange}) => {
                     />
                 </svg>
                 <b>Сортировка по:</b>
-                <span onClick={() => setShowSortPopup(!showSortPopup)}>{value.name}</span>
+                <span onClick={() => setShowSortPopup(!showSortPopup)}>{sort.name}</span>
             </div>
             {showSortPopup &&
                 <div className="sort__popup">
@@ -40,7 +45,7 @@ const Sort = ({value, onSortChange}) => {
                         {
                             sortItems.map((obj, index) => <li
                                 key={index}
-                                className={value.sort === obj.sort ? 'active' : ''}
+                                className={sort.property === obj.property ? 'active' : ''}
                                 onClick={() => onSortItemChange(obj)}
                             >{obj.name}</li>)
                         }

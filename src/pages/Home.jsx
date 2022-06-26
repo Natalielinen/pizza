@@ -1,28 +1,25 @@
+import React, {useEffect, useState, useContext} from 'react';
+import {useDispatch, useSelector} from 'react-redux';
 import Categories from '../modules/categories/Categories';
 import Sort from '../modules/sort/Sort';
 import Skeleton from '../modules/pizzaBlock/Skeleton';
 import PizzaBlock from '../modules/pizzaBlock/PizzaBlock';
-import React, {useEffect, useState, useContext} from 'react';
 import {AppContext} from '../App';
-import {useDispatch, useSelector} from 'react-redux';
-import {setActiveCategoryIndex, setActiveSortType} from '../redux/slices/filterSlice';
+import {setActiveCategoryIndex} from '../redux/slices/filterSlice';
 
 
 const Home = () => {
     const [data, setData] = useState([])
     const [isLoading, setIsLoading] = useState(true)
-    //const [sortType, setActiveSortType] = useState({name: 'популярности', sort: 'rating'})
 
-    const activeCategoryIndex = useSelector((state) => state.filter.activeCategoryIndex)
-    const sortType = useSelector((state) => state.filter.sortType);
+    const {activeCategoryIndex, sort} = useSelector((state) => state.filter)
     const dispatch = useDispatch();
 
     const {searchValue} = useContext(AppContext)
 
     useEffect(() => {
-
-        const sortBy = sortType.sort.replace('-', '')
-        const sortOrder = sortType.sort.includes('-') ? 'asc' : 'desc'
+        const sortBy = sort.property.replace('-', '')
+        const sortOrder = sort.property.includes('-') ? 'asc' : 'desc'
         fetch(`https://62a8517e943591102b9ef016.mockapi.io/pizzas?${activeCategoryIndex > 0 ? `category=${activeCategoryIndex}` : ''}&sortBy=${sortBy}&order=${sortOrder}`)
             .then(res => res.json())
             .then(data => {
@@ -30,7 +27,7 @@ const Home = () => {
                 setIsLoading(false)
             })
         window.scrollTo(0, 0);
-    }, [activeCategoryIndex, sortType])
+    }, [activeCategoryIndex, sort])
 
     const pizzas = data.filter(obj => obj.title.toLowerCase().includes(searchValue.toLowerCase())).map(obj =>
         <PizzaBlock {...obj} key={obj.id}/>)
@@ -40,7 +37,7 @@ const Home = () => {
             <div className="content__top">
                 <Categories activeCategoryIndex={activeCategoryIndex}
                             onCategoryClick={(i) => dispatch(setActiveCategoryIndex(i))}/>
-                <Sort value={sortType} onSortChange={(i) => setActiveSortType(i)}/>
+                <Sort/>
             </div>
             <h2 className="content__title">Все пиццы</h2>
             <div className="content__items">
