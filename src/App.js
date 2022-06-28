@@ -1,4 +1,4 @@
-import React, {createContext, useState} from 'react';
+import React from 'react';
 import {
     Routes,
     Route,
@@ -9,10 +9,6 @@ import Header from './modules/header/Header';
 import Home from './pages/Home';
 import NotFound from './pages/NotFound';
 import Cart from './pages/Cart';
-
-//https://62a8517e943591102b9ef016.mockapi.io/pizzas
-
-export const AppContext = createContext(null)
 
 function App() {
 
