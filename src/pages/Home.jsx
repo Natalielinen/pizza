@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {useNavigate} from 'react-router-dom';
 import Categories from '../modules/categories/Categories';
@@ -16,7 +16,19 @@ const Home = () => {
 
     const {activeCategoryIndex, sort, searchValue} = useSelector((state) => state.filter)
     const dispatch = useDispatch();
-    const navigate = useNavigate()
+    const navigate = useNavigate();
+    const isSearch = useRef(false);
+    const isMounted = useRef(false);
+
+    const fetchPizzas = () => {
+        const sortBy = sort.property.replace('-', '')
+        const sortOrder = sort.property.includes('-') ? 'asc' : 'desc'
+        axios.get(`https://62a8517e943591102b9ef016.mockapi.io/pizzas?${activeCategoryIndex > 0 ? `category=${activeCategoryIndex}` : ''}&sortBy=${sortBy}&order=${sortOrder}`)
+            .then(res => {
+                setData(res.data)
+                setIsLoading(false)
+            })
+    }
 
     useEffect(() => {
         if (window.location.search) {
@@ -30,29 +42,31 @@ const Home = () => {
                 ...params,
                 sort
             }))
+            isSearch.current = true;
         }
 
     }, [])
 
     useEffect(() => {
-        const sortBy = sort.property.replace('-', '')
-        const sortOrder = sort.property.includes('-') ? 'asc' : 'desc'
-        axios.get(`https://62a8517e943591102b9ef016.mockapi.io/pizzas?${activeCategoryIndex > 0 ? `category=${activeCategoryIndex}` : ''}&sortBy=${sortBy}&order=${sortOrder}`)
-            .then(res => {
-                setData(res.data)
-                setIsLoading(false)
-            })
+        if (!isSearch.current) {
+            fetchPizzas();
+        }
+
+        isSearch.current = false;
+
         window.scrollTo(0, 0);
     }, [activeCategoryIndex, sort])
 
     useEffect(() => {
-        const queryString = qs.stringify({
-            sortProperty: sort.property,
-            activeCategoryIndex
-        })
+        if (isMounted.current) {
+            const queryString = qs.stringify({
+                sortProperty: sort.property,
+                activeCategoryIndex
+            })
+            navigate(`?${queryString}`)
+        }
 
-        navigate(`?${queryString}`)
-
+        isMounted.current = true
 
     }, [activeCategoryIndex, sort])
 
