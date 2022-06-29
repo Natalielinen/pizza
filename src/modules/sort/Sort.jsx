@@ -2,19 +2,21 @@ import React, {useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {setActiveSortType} from '../../redux/slices/filterSlice';
 
+export const sortItems = [
+    {name: 'популярности DESC', property: 'rating'},
+    {name: 'популярности ASC', property: '-rating'},
+    {name: 'цене DESC', property: 'price'},
+    {name: 'цене ASC', property: '-price'},
+    {name: 'алфавиту DESC', property: 'title'},
+    {name: 'алфавиту ASC', property: '-title'}
+]
+
 const Sort = () => {
     const sort = useSelector(state => state.filter.sort)
     const dispatch = useDispatch();
 
     const [showSortPopup, setShowSortPopup] = useState(false)
-    const sortItems = [
-        {name: 'популярности DESC', property: 'rating'},
-        {name: 'популярности ASC', property: '-rating'},
-        {name: 'цене DESC', property: 'price'},
-        {name: 'цене ASC', property: '-price'},
-        {name: 'алфавиту DESC', property: 'title'},
-        {name: 'алфавиту ASC', property: '-title'}
-    ]
+
 
     const onSortItemChange = (obj) => {
         dispatch(setActiveSortType(obj))
