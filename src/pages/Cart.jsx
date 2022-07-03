@@ -1,7 +1,9 @@
 import React from 'react';
 import {NavLink} from 'react-router-dom';
+import {useSelector} from 'react-redux';
 
 const Cart = () => {
+    const {totalPrice, items} = useSelector(state => state.cart);
     return (
         <div className="cart">
             <div className="cart__top">
@@ -268,8 +270,8 @@ const Cart = () => {
             </div>
             <div className="cart__bottom">
                 <div className="cart__bottom-details">
-                    <span> Всего пицц: <b>3 шт.</b> </span>
-                    <span> Сумма заказа: <b>900 ₽</b> </span>
+                    <span> Всего пицц: <b>{items.length} шт.</b> </span>
+                    <span> Сумма заказа: <b>{totalPrice} ₽</b> </span>
                 </div>
                 <div className="cart__bottom-buttons">
                     <NavLink to="/" className="button button--outline button--add go-back-btn">
@@ -286,7 +288,7 @@ const Cart = () => {
                 </div>
             </div>
         </div>
-    )
-}
+    );
+};
 
 export default Cart;
