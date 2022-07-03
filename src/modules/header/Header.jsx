@@ -56,7 +56,9 @@ const Header = () => {
                                 strokeLinejoin="round"
                             />
                         </svg>
-                        <span>{items.length}</span>
+                        <span>{items.reduce((sum, item) => {
+                            return item.count + sum;
+                        }, 0)}</span>
                     </NavLink>
                 </div>
             </div>
